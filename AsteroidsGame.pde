@@ -1,8 +1,7 @@
-//your variable declarations here
 Spaceship ship = new Spaceship (); 
 Star[] sky = new Star[200];
-//Asteroid metors = new Asteroid(); 
 ArrayList <Asteroid> metors = new ArrayList <Asteroid>();
+ArrayList <Bullet> load = new ArrayList <Bullet>();
 public void keyPressed() {
   if (key == 'a') {
     ship.turn(-10);
@@ -24,6 +23,11 @@ public void keyPressed() {
     ship.setCenterY((int)(Math.random()*400));
     ship.setDirection((int)(Math.random()*360));
   }
+  if (key == 'r')
+  {
+    Bullet gun = new Bullet(ship);
+    load.add(gun);
+  }
 }
 public void setup() 
 {
@@ -32,7 +36,7 @@ public void setup()
   for (int i = 0; i<sky.length; i++) {
     sky[i] = new Star();
   }
-  for (int i = 0; i< 6; i++)
+  for (int i = 0; i< 20; i++)
   {
     Asteroid metor = new Asteroid();
     metors.add(metor);
@@ -60,5 +64,25 @@ public void draw()
   for (int i = 0; i<sky.length; i++)
   {
     sky[i].show();
+  }
+   for (int i = 0; i < load.size(); i++)
+  {
+    load.get(i).move();
+    load.get(i).show();
+  }
+  for (int i = 0; i < load.size(); i++)
+  {
+    for (int j = 0; j < load.size(); j++)
+    {
+      float f = dist((float)load.get(i).getX(), (float)load.get(i).getY(), (float)metors.get(j).getX(), (float)metors.get(j).getY());
+      if (f<50)
+      {
+        Asteroid metor = new Asteroid();
+        metors.remove(j);
+        metors.add(metor);
+        load.remove(i);
+        break;
+      }
+    }
   }
 }
